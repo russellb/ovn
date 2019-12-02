@@ -1277,13 +1277,10 @@ ipam_insert_mac(struct eth_addr *ea, bool check)
     }
 
     uint64_t mac64 = eth_addr_to_uint64(*ea);
-    uint64_t prefix = eth_addr_to_uint64(mac_prefix);
 
-    /* If the new MAC was not assigned by this address management system or
-     * check is true and the new MAC is a duplicate, do not insert it into the
-     * macam hmap. */
-    if (((mac64 ^ prefix) >> 24)
-        || (check && ipam_is_duplicate_mac(ea, mac64, true))) {
+    /* If check is true and the new MAC is a duplicate, do not insert it
+     * into the macam hmap. */
+    if (check && ipam_is_duplicate_mac(ea, mac64, true)) {
         return;
     }
 
